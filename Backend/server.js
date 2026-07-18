@@ -38,7 +38,7 @@ const createAdmin = async () => {
     });
 
     if (existingAdmin) {
-      console.log("✅ Admin already exists");
+      console.log("Admin already exists");
 
       return;
     }
@@ -55,9 +55,9 @@ const createAdmin = async () => {
       role: "admin",
     });
 
-    console.log("✅ Default Admin Created");
+    console.log("Default Admin Created");
   } catch (error) {
-    console.log("❌ Admin Seed Error:", error.message);
+    console.log("Admin Seed Error:", error.message);
   }
 };
 
@@ -74,7 +74,7 @@ const startServer = async () => {
     // ================= CORS =================
 
     const allowedOrigins = [
-      "http://localhost:5173",
+      "https://smart-wall-paint.onrender.com",
 
       "http://localhost:5174"
     ];
@@ -132,7 +132,7 @@ const startServer = async () => {
       res.status(200).json({
         success: true,
 
-        message: "Smart Wall Paint Visualizer API Running 🚀",
+        message: "Smart Wall Paint Visualizer API Running...",
       });
     });
 
