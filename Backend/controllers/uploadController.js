@@ -1,32 +1,23 @@
-import cloudinary from "../config/cloudinary.js";
-import fs from "fs";
+import multer from "multer";
 
-export const uploadImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "No image uploaded",
-      });
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage: storage,
+
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
+
+  fileFilter(req, file, cb) {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files allowed"));
     }
+  },
+});
 
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "smart-wall/rooms",
-    });
-
-    fs.unlinkSync(req.file.path);
-
-    res.status(200).json({
-      success: true,
-      imageUrl: result.secure_url,
-      public_id: result.public_id,
-    });
-  } catch (error) {
-    console.error("UPLOAD ERROR:", error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+export default upload;

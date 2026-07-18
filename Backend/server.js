@@ -5,12 +5,12 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import path from "path";
 import bcrypt from "bcryptjs";
 
 import connectDB from "./config/db.js";
 import User from "./models/User.js";
 
+// Routes
 import authRoutes from "./routes/authRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import colorRoutes from "./routes/colorRoutes.js";
@@ -73,28 +73,9 @@ const startServer = async () => {
 
     // ================= CORS =================
 
-    const allowedOrigins = [
-      "https://smart-wall-paint.onrender.com",
-
-      "http://localhost:5174"
-    ];
-
     app.use(
       cors({
-        origin: (origin, callback) => {
-          console.log("REQUEST ORIGIN:", origin);
-
-          if (!origin) {
-            return callback(null, true);
-          }
-
-          if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-          }
-
-          // development support
-          return callback(null, true);
-        },
+        origin: true,
 
         credentials: true,
 
@@ -118,21 +99,13 @@ const startServer = async () => {
       }),
     );
 
-    // ================= STATIC =================
-
-    app.use(
-      "/uploads",
-
-      express.static(path.join(process.cwd(), "uploads")),
-    );
-
     // ================= ROOT =================
 
     app.get("/", (req, res) => {
       res.status(200).json({
         success: true,
 
-        message: "Smart Wall Paint Visualizer API Running...",
+        message: "Smart Wall Paint Visualizer API Running",
       });
     });
 
